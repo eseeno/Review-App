@@ -1,10 +1,9 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Logout({ onLogout }) {
     const handleLogout = () => {
-        fetch('http://backend:8000/api/logout/', {
-            method: 'POST'
-        })
+        fetch('http://localhost:8000/api/logout/', { method: 'POST' })
         .then(res => {
             if (res.ok) {
                 onLogout();
@@ -15,7 +14,9 @@ function Logout({ onLogout }) {
     };
 
     return (
-        <button onClick={handleLogout}>Logout</button>
+        <button onClick={handleLogout} className="btn btn-danger">
+            Logout
+        </button>
     );
 }
 

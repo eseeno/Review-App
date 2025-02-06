@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'reviews',
     'corsheaders',
     'rest_framework',
+    'rest-framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -59,11 +60,11 @@ CORS_ALLOWED_ORIGINS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',  # For web browser sessions
+        'rest_framework.authentication.SessionAuthentication',  
        
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly', # Default permission
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly', 
     ]
 }
 
@@ -96,8 +97,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'review_db',
         'USER': 'postgres',
-        'PASSWORD': 'postgres', #Use the same as in docker-compose
-        'HOST': 'db', #The name of the db service in docker-compose
+        'PASSWORD': 'postgres', 
+        'HOST': 'db', 
         'PORT': 5432,
     }
 }

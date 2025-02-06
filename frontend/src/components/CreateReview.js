@@ -1,64 +1,51 @@
 import React, { useState } from 'react';
-import './CreateReview.css'; // You can create a CSS file for styling
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function CreateReview() {
     const [category, setCategory] = useState('');
-    const [rating, setRating] = useState(3); // Default rating to 3
+    const [rating, setRating] = useState(3);
     const [comment, setComment] = useState('');
-    const [submissionStatus, setSubmissionStatus] = useState(null); // 'success', 'error', null
+    const [submissionStatus, setSubmissionStatus] = useState(null);
 
     const handleSubmit = async (event) => {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault();
+        setSubmissionStatus('pending');
 
-        setSubmissionStatus('pending'); // Show pending status
-
-        const reviewData = {
-            category: category,
-            rating: parseInt(rating), // Ensure rating is an integer
-            comment: comment,
-        };
+        const reviewData = { category, rating: parseInt(rating), comment };
 
         try {
-            const response = await fetch('http://backend:8000/api/reviews/', { // POST request to create review
+            const response = await fetch('http://localhost:8000/api/reviews/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // You might need to include authorization headers here if your API requires login
                 },
                 body: JSON.stringify(reviewData),
             });
 
             if (response.ok) {
-                setSubmissionStatus('success'); // Set success status
-                // Optionally clear the form after successful submission
+                setSubmissionStatus('success');
                 setCategory('');
                 setRating(3);
                 setComment('');
-                // Optionally redirect user or show a success message
-                console.log('Review created successfully!');
             } else {
-                setSubmissionStatus('error'); // Set error status
-                const errorData = await response.json(); // Or response.text() if not JSON
-                console.error('Error creating review:', errorData);
+                setSubmissionStatus('error');
+                const errorData = await response.json();
+                console.error('Error:', errorData);
             }
         } catch (error) {
-            setSubmissionStatus('error'); // Set error status on fetch error
+            setSubmissionStatus('error');
             console.error('Fetch error:', error);
         }
     };
 
     return (
-        <div className="create-review-container"> {/* Apply CSS class for styling */}
+        <div className="container">
             <h2>Create a Review</h2>
-            {submissionStatus === 'success' && (
-                <p className="success-message">Review submitted successfully!</p>
-            )}
-            {submissionStatus === 'error' && (
-                <p className="error-message">Error submitting review. Please try again.</p>
-            )}
-            <form onSubmit={handleSubmit} className="review-form"> {/* Apply CSS class for form styling */}
-                <div className="form-group">
-                    <label htmlFor="category">Category:</label>
+            {submissionStatus === 'success' && <p className="text-success">Review submitted successfully!</p>}
+            {submissionStatus === 'error' && <p className="text-danger">Error submitting review. Please try again.</p>}
+            <form onSubmit={handleSubmit} className="mt-4">
+                <div className="mb-3">
+                    <label htmlFor="category" className="form-label">Category:</label>
                     <input
                         type="text"
                         id="category"
@@ -68,8 +55,8 @@ function CreateReview() {
                         required
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="rating">Rating (1-5):</label>
+                <div className="mb-3">
+                    <label htmlFor="rating" className="form-label">Rating (1-5):</label>
                     <input
                         type="number"
                         id="rating"
@@ -81,8 +68,8 @@ function CreateReview() {
                         required
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="comment">Comment:</label>
+                <div className="mb-3">
+                    <label htmlFor="comment" className="form-label">Comment:</label>
                     <textarea
                         id="comment"
                         className="form-control"
@@ -92,7 +79,7 @@ function CreateReview() {
                         required
                     />
                 </div>
-                <button type="submit" className="submit-button" disabled={submissionStatus === 'pending'}>
+                <button type="submit" className="btn btn-primary" disabled={submissionStatus === 'pending'}>
                     {submissionStatus === 'pending' ? 'Submitting...' : 'Submit Review'}
                 </button>
             </form>

@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Register() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [error, setError] = useState(null); // State for error message
-
+    const [error, setError] = useState(null);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setError(null); // Clear any previous errors
+        setError(null);
 
-        fetch('http://backend:8000/api/register/', {
+        fetch('http://localhost:8000/api/register/', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password, email })
         })
         .then(res => res.json())
@@ -33,13 +31,43 @@ function Register() {
     };
 
     return (
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '300px' }}>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <input type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} required style={{ padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }} />
-            <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required style={{ padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }} />
-            <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required style={{ padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }} />
-            <button type="submit" style={{ backgroundColor: '#4CAF50', color: 'white', padding: '10px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Register</button>
-        </form>
+        <div className="container mt-5">
+            <h2>Register</h2>
+            <form onSubmit={handleSubmit}>
+                {error && <div className="alert alert-danger">{error}</div>}
+                <div className="form-group mb-3">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Username"
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="form-group mb-3">
+                    <input
+                        type="email"
+                        className="form-control"
+                        placeholder="Email"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="form-group mb-3">
+                    <input
+                        type="password"
+                        className="form-control"
+                        placeholder="Password"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                <button type="submit" className="btn btn-success btn-block">Register</button>
+            </form>
+        </div>
     );
 }
 
